@@ -6,7 +6,11 @@ class CharactersController < ApplicationController
     
     def create 
         character = Character.create(character_params)
-        render json: character
+        if character.valid?
+            render json: character
+        else
+        render json: character.errors, status: 422
+        end
     end
 
     def update

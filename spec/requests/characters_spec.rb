@@ -58,7 +58,7 @@ RSpec.describe "Characters", type: :request do
 
   describe "DELETE /destroy" do
     it 'deletes a character' do
-      character_params = character_params = {
+     character_params = {
         character: {
           name: 'Dracula',
           age: 590,
@@ -71,6 +71,66 @@ RSpec.describe "Characters", type: :request do
       expect(response).to have_http_status(200)
       characters = Character.all
       expect(characters).to be_empty
+    end
+  end
+  describe "cannot create a character without valid attributes" do
+    it 'cannot create a character without a name' do
+      character_params = {
+        character: {
+          age: 590,
+          enjoys:'blood'
+        }
+      }
+      post '/characters', params: character_params
+      character = JSON.parse(response.body)
+      expect(response).to have_http_status (422)
+      expect(character['name']).to include "can't be blank"
+    end
+  end
+
+  describe "cannot create a character without valid attributes" do
+    it 'cannot create a character without a age' do
+      character_params = {
+        character: {
+          name: 'Dracula',
+          enjoys:'blood'
+        }
+      }
+      post '/characters', params: character_params
+      character = JSON.parse(response.body)
+      expect(response).to have_http_status (422)
+      expect(character['age']).to include "can't be blank"
+    end
+  end
+
+  describe "cannot create a character without valid attributes" do
+    it 'cannot create a character without a enjoys' do
+      character_params = {
+        character: {
+          name: 'Dracula',
+          age: 590
+        }
+      }
+      post '/characters', params: character_params
+      character = JSON.parse(response.body)
+      expect(response).to have_http_status (422)
+      expect(character['enjoys']).to include "can't be blank"
+    end
+  end
+
+  describe "cannot create a character without valid attributes" do
+    it 'cannot create a character with less than 10 characters in enjoys' do
+      character_params = {
+        character: {
+          name: 'Dracula',
+          age: 590,
+          enjoys:'blood'
+        }
+      }
+      post '/characters', params: character_params
+      character = JSON.parse(response.body)
+      expect(response).to have_http_status (422)
+      expect(character['enjoys']).to include "#{count} characters not enough"
     end
   end
 end
