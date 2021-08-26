@@ -49,10 +49,10 @@ RSpec.describe "Characters", type: :request do
       enjoys:'blood and darkness'
     }
   }
-  patch "/characters/#{character.id}", params: updated_character_params
-  updated_character = Character.find(character.id)
-  expect(response).to have_http_status(200)
-  expect(updated_character.enjoys).to eq 'blood and darkness'
+    patch "/characters/#{character.id}", params: updated_character_params
+    updated_character = Character.find(character.id)
+    expect(response).to have_http_status(200)
+    expect(updated_character.enjoys).to eq 'blood and darkness'
     end
   end
 
