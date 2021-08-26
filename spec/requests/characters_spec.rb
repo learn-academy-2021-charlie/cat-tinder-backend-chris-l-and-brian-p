@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Characters", type: :request do
   describe "GET /index" do
     it "gets the list of characters" do
-      Character.create name: 'Dracula', age: 590, enjoys: 'blood'
+      Character.create name: 'Dracula', age: 590, enjoys: 'blood and darkness'
 
       get '/characters'
 
@@ -19,7 +19,7 @@ RSpec.describe "Characters", type: :request do
       character: {
         name: 'Dracula',
         age: 590,
-        enjoys:'blood'
+        enjoys:'blood and darkness'
       }
     }
       post '/characters', params: character_params
@@ -27,7 +27,7 @@ RSpec.describe "Characters", type: :request do
       expect(response).to have_http_status(200)
       expect(new_character.name).to eq 'Dracula'
       expect(new_character.age).to eq 590
-      expect(new_character.enjoys).to eq 'blood'
+      expect(new_character.enjoys).to eq 'blood and darkness'
     end
   end
 
@@ -37,7 +37,7 @@ RSpec.describe "Characters", type: :request do
         character: {
         name: 'Dracula',
         age: 590,
-        enjoys:'blood'
+        enjoys:'blood and darkness'
       }
     }
     post '/characters', params: character_params
@@ -46,13 +46,13 @@ RSpec.describe "Characters", type: :request do
       character: {
       name: 'Dracula',
       age: 590,
-      enjoys:'blood and darkness'
+      enjoys:'drinking blood and darkness'
     }
   }
     patch "/characters/#{character.id}", params: updated_character_params
     updated_character = Character.find(character.id)
     expect(response).to have_http_status(200)
-    expect(updated_character.enjoys).to eq 'blood and darkness'
+    expect(updated_character.enjoys).to eq 'drinking blood and darkness'
     end
   end
 
@@ -62,7 +62,7 @@ RSpec.describe "Characters", type: :request do
         character: {
           name: 'Dracula',
           age: 590,
-          enjoys:'blood'
+          enjoys:'blood and darkness'
         }
       }
       post '/characters', params:character_params
@@ -78,7 +78,7 @@ RSpec.describe "Characters", type: :request do
       character_params = {
         character: {
           age: 590,
-          enjoys:'blood'
+          enjoys:'blood and darkness'
         }
       }
       post '/characters', params: character_params
@@ -93,7 +93,7 @@ RSpec.describe "Characters", type: :request do
       character_params = {
         character: {
           name: 'Dracula',
-          enjoys:'blood'
+          enjoys:'blood and darkness'
         }
       }
       post '/characters', params: character_params
@@ -130,7 +130,7 @@ RSpec.describe "Characters", type: :request do
       post '/characters', params: character_params
       character = JSON.parse(response.body)
       expect(response).to have_http_status (422)
-      expect(character['enjoys']).to include "#{count} characters not enough"
+      expect(character['enjoys']).to include "minimum is 10 characters"
     end
   end
 end
